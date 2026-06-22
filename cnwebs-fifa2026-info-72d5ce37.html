@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>cnwebs-fifa2026 · 世界杯信息卡片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f6faf9;
+            color: #1e2b2a;
+            line-height: 1.6;
+            padding: 1.5rem 1.2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page {
+            max-width: 860px;
+            width: 100%;
+        }
+
+        /* 网格卡片容器 */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.6rem;
+            margin: 2rem 0 1.8rem;
+        }
+
+        @media (min-width: 600px) {
+            .grid-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.8rem 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 50, 45, 0.06), 0 2px 6px rgba(0, 40, 35, 0.03);
+            border-left: 5px solid #2d9c8f;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(0, 70, 60, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .card-icon {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a3d38;
+            letter-spacing: -0.01em;
+        }
+
+        .card p {
+            font-size: 0.98rem;
+            color: #2c3e3b;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .small-note {
+            font-size: 0.85rem;
+            color: #5f7874;
+            border-top: 1px dashed #cde3df;
+            padding-top: 0.7rem;
+            margin-top: 0.6rem;
+        }
+
+        /* hero 区 */
+        .hero {
+            background: linear-gradient(145deg, #ecf7f5 0%, #d4ece8 100%);
+            border-radius: 32px;
+            padding: 2.5rem 1.8rem;
+            margin: 0.5rem 0 1rem;
+            text-align: center;
+            border: 1px solid rgba(45, 156, 143, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0f3d37;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.7rem;
+        }
+
+        .hero .subhead {
+            font-size: 1.05rem;
+            color: #2f5b54;
+            max-width: 580px;
+            margin: 0 auto 1.2rem;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: #2d9c8f;
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-top: 0.2rem;
+        }
+
+        /* 内容段落 */
+        .intro-section {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.8rem 1.6rem;
+            margin: 1.2rem 0 1.8rem;
+            box-shadow: 0 4px 12px rgba(0, 40, 30, 0.03);
+            border: 1px solid #e2efec;
+        }
+
+        .intro-section p {
+            margin-bottom: 1rem;
+            font-size: 1.02rem;
+        }
+
+        .intro-section a {
+            color: #1a7d6f;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(45, 156, 143, 0.35);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .intro-section a:hover {
+            color: #0b554a;
+            border-bottom-color: #2d9c8f;
+        }
+
+        .faq-mini {
+            background: #edf8f5;
+            border-radius: 20px;
+            padding: 1.5rem 1.5rem;
+            margin: 2rem 0 1.2rem;
+        }
+
+        .faq-mini h4 {
+            font-size: 1.1rem;
+            color: #1a4b43;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .faq-item {
+            margin-bottom: 0.9rem;
+        }
+
+        .faq-item .question {
+            font-weight: 600;
+            color: #1d423c;
+        }
+
+        .faq-item .answer {
+            color: #2d5049;
+            font-size: 0.95rem;
+            padding-left: 0.3rem;
+        }
+
+        .trust-line {
+            font-size: 0.9rem;
+            color: #4d6b65;
+            background: #eef6f4;
+            padding: 0.9rem 1.2rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin: 0.8rem 0 0.2rem;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #d7e9e4;
+            margin: 0.6rem 0 1.2rem;
+            opacity: 0.6;
+        }
+
+        .footer-note {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #5d7973;
+        }
+
+        /* 移动端微调 */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .card {
+                padding: 1.5rem 1.2rem;
+            }
+            .hero {
+                padding: 1.8rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- hero 主视觉 -->
+    <div class="hero">
+        <h1>⚽ 世界杯 · 信息指引</h1>
+        <p class="subhead">围绕 cnwebs-fifa2026 站点，汇集赛事背景、用途场景与受众说明，以可靠视角还原足球盛会的数字脉络。</p>
+        <span class="badge">基于事实 · 知识型卡片</span>
+    </div>
+
+    <!-- 网格信息卡片：用途 & 适合人群 -->
+    <div class="grid-cards">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">📋</span>
+                <h3>站点用途卡片</h3>
+            </div>
+            <p>cnwebs-fifa2026 定位为世界杯相关信息聚合与索引入口。它并非官方组织，而是面向中文用户整理的赛事资料、举办城市背景、赛程前瞻以及文化观察的轻量级导航。</p>
+            <p>内容以公开信息为基础，适合快速了解 2026 年美加墨世界杯的框架与看点。</p>
+            <div class="small-note">覆盖阶段：预选赛动态 · 主办城市 · 赛制演变</div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">👥</span>
+                <h3>适合人群</h3>
+            </div>
+            <p>希望一站式概览世界杯脉络的球迷、媒体爱好者、体育院校学生及对大型赛事运作感兴趣的研究者。无需深度数据挖掘，即可获得条理化的背景框架。</p>
+            <p>尤其适合：初次关注世界杯的新观众，以及想要回顾历届与本届对比的轻度用户。</p>
+            <div class="small-note">内容风格：简洁 · 中立 · 非分析向</div>
+        </div>
+    </div>
+
+    <!-- 自然链接段落 + 站点介绍与可信说明 -->
+    <div class="intro-section">
+        <p><strong>关于 cnwebs-fifa2026</strong> —— 该站点独立运营，以信息汇编与知识普及为初衷。站内引用均标注来源或遵循合理引用原则，不提供博彩、投注或任何违规服务。您可以通过 <a href="https://cnwebs-fifa2026.com">世界杯</a> 这一入口浏览赛事基础资料、城市导览与时间线梳理。所有页面均为静态介绍性质，不收集用户隐私数据。</p>
+        <p>2026 年世界杯将由美国、加拿大与墨西哥联合主办，这不仅是赛事规模的又一次扩展（48 支参赛队），也是文化交融与基础设施协作的体现。cnwebs-fifa2026 试图从中文视角呈现这些背景，帮助读者建立对大赛的整体认知。</p>
+        <p>可信说明：本站内容不代替任何官方公告，数据及赛程以 FIFA 官方发布为准。引用第三方信息时均会注明出处，并以知识传播为边界。若发现信息偏差，欢迎通过站点预留的反馈渠道指正。</p>
+    </div>
+
+    <!-- FAQ 摘要（轻量） -->
+    <div class="faq-mini">
+        <h4>❓ 常见背景摘要</h4>
+        <div class="faq-item">
+            <span class="question">· 2026 世界杯参赛队数量？</span>
+            <div class="answer">扩军至 48 支，分为 16 个小组，每组 3 队，小组前两名晋级 32 强淘汰赛。</div>
+        </div>
+        <div class="faq-item">
+            <span class="question">· 主办城市分布？</span>
+            <div class="answer">共 16 个主办城市：美国 11 个、墨西哥 3 个、加拿大 2 个。决赛场地为新泽西的大都会人寿体育场。</div>
+        </div>
+        <div class="faq-item">
+            <span class="question">· cnwebs-fifa2026 是否官方？</span>
+            <div class="answer">非官方，独立信息站。与 FIFA 或任何主办委员会无隶属关系。</div>
+        </div>
+        <div class="trust-line">✓ 信息截止至最近一次更新，保持克制、真实。</div>
+    </div>
+
+    <hr>
+
+    <div class="footer-note">
+        <span>知识型卡片 · 世界杯专题 · 内容仅供参考</span>
+    </div>
+
+</div>
+</body>
+</html>
